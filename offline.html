@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Pelet Tracker - Offline mod</title>
+    <meta name="theme-color" content="#764ba2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            max-width: 550px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .icon-circle {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        .icon-circle i {
+            font-size: 64px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .badge {
+            background: rgba(39, 174, 96, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 35px 0;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .feature i {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #f1c40f;
+        }
+        
+        .feature span {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .btn {
+            background: white;
+            color: #764ba2;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+            border: 2px solid transparent;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        .status {
+            margin-top: 35px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .retry-count {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .icon-circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .icon-circle i {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="icon-circle">
+            <i class="fas fa-cloud-moon"></i>
+        </div>
+        
+        <h1>Offline mod</h1>
+        
+        <div class="badge">
+            <i class="fas fa-check-circle"></i> Potpuno funkcionalno
+        </div>
+        
+        <p>
+            Pelet Traktor nastavlja sa radom offline.<br>
+            <strong>Svi podaci su dostupni</strong> i sačuvani na vašem uređaju.
+        </p>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-pencil-alt"></i>
+                <span>Unos potrošnje</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-chart-line"></i>
+                <span>Statistika</span>
+            </div>
+            <div class="feature">
+                <i class="fas fa-calendar"></i>
+                <span>Kalendar</span>
+            </div>
+        </div>
+        
+        <a href="/" class="btn" onclick="window.location.reload()">
+            <i class="fas fa-sync-alt"></i> Pokušaj ponovo
+        </a>
+        
+        <div class="status">
+            <i class="fas fa-wifi-slash"></i> Nema internet konekcije
+        </div>
+        
+        <div class="retry-count" id="retryMessage">
+            Automatski pokušaj za 3 sekunde...
+        </div>
+    </div>
+    
+    <script>
+        let retrySeconds = 3;
+        const retryMessage = document.getElementById('retryMessage');
+        
+        function updateRetryMessage() {
+            if (retryMessage) {
+                retryMessage.textContent = `Automatski pokušaj za ${retrySeconds} sekundi...`;
+            }
+        }
+        
+        function checkConnection() {
+            if (navigator.onLine) {
+                window.location.href = '/';
+            } else {
+                retrySeconds = 3;
+                updateRetryMessage();
+                setTimeout(countdown, 1000);
+            }
+        }
+        
+        function countdown() {
+            if (navigator.onLine) {
+                window.location.href = '/';
+                return;
+            }
+            
+            retrySeconds--;
+            updateRetryMessage();
+            
+            if (retrySeconds > 0) {
+                setTimeout(countdown, 1000);
+            } else {
+                checkConnection();
+            }
+        }
+        
+        setTimeout(checkConnection, 1000);
+        
+        window.addEventListener('online', () => {
+            window.location.href = '/';
+        });
+        
+        document.querySelector('.btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>
