@@ -6,56 +6,56 @@
   "background_color": "#764ba2",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
-  "start_url": "/",
-  "id": "/pelet-tracker-pro",
+  "scope": "/pelet-tracker/",
+  "start_url": "/pelet-tracker/",
+  "id": "/pelet-tracker/",
   "lang": "sr-Latn-RS",
   "dir": "ltr",
   "icons": [
     {
-      "src": "icons/icon-72x72.png",
+      "src": "/pelet-tracker/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-96x96.png",
+      "src": "/pelet-tracker/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-128x128.png",
+      "src": "/pelet-tracker/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-144x144.png",
+      "src": "/pelet-tracker/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-152x152.png",
+      "src": "/pelet-tracker/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-192x192.png",
+      "src": "/pelet-tracker/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-384x384.png",
+      "src": "/pelet-tracker/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "/pelet-tracker/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -66,10 +66,10 @@
       "name": "Nova sezona",
       "short_name": "Nova",
       "description": "Kreiraj novu sezonu",
-      "url": "/?action=new",
+      "url": "/pelet-tracker/?action=new",
       "icons": [
         {
-          "src": "icons/icon-96x96.png",
+          "src": "/pelet-tracker/icons/icon-96x96.png",
           "sizes": "96x96"
         }
       ]
@@ -78,32 +78,18 @@
       "name": "Poslednja sezona",
       "short_name": "Poslednja",
       "description": "Otvori poslednju aktivnu sezonu",
-      "url": "/?action=last",
+      "url": "/pelet-tracker/?action=last",
       "icons": [
         {
-          "src": "icons/icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Statistika",
-      "short_name": "Statistika",
-      "description": "Pregled statistike",
-      "url": "/?action=stats",
-      "icons": [
-        {
-          "src": "icons/icon-96x96.png",
+          "src": "/pelet-tracker/icons/icon-96x96.png",
           "sizes": "96x96"
         }
       ]
     }
   ],
-  "categories": ["productivity", "utilities", "lifestyle"],
-  "screenshots": [
-    {
-      "src": "screenshots/desktop.jpg",
-      "sizes": "1280x720",
+  "categories": ["productivity", "utilities"],
+  "prefer_related_applications": false
+}
       "type": "image/jpeg",
       "form_factor": "wide",
       "label": "Pelet Traktor na desktop računaru"
