@@ -87,26 +87,5 @@
       ]
     }
   ],
-  "categories": ["productivity", "utilities"],
-  "prefer_related_applications": false
-}
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Pelet Traktor na desktop računaru"
-    },
-    {
-      "src": "screenshots/mobile.jpg",
-      "sizes": "750x1334",
-      "type": "image/jpeg",
-      "form_factor": "narrow",
-      "label": "Pelet Traktor na mobilnom telefonu"
-    }
-  ],
-  "prefer_related_applications": false,
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://pelettracker.pro/manifest.json"
-    }
-  ]
+  "categories": ["productivity", "utilities"]
 }
