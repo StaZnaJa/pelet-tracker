@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Pelet Tracker Pro</title>
+    
+    <!-- PWA Meta tagovi -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#764ba2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pelet Tracker">
+    <meta name="application-name" content="Pelet Tracker Pro">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#764ba2">
+    <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+    
+    <!-- Apple ikonice -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-152x152.png">
+    
+    <!-- Apple splash screen -->
+    <link rel="apple-touch-startup-image" href="splash/splash-port.jpg">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Preconnect za brže učitavanje -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- SEO -->
+    <meta name="description" content="Praćenje potrošnje peleta kroz grejne sezone. Potpuno offline PWA aplikacija.">
+    <meta name="keywords" content="pelet, grejanje, potrošnja, tracker, offline, pwa">
+    <meta name="author" content="Pelet Tracker Pro">
+    <link rel="canonical" href="https://pelettracker.pro">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Pelet Tracker Pro">
+    <meta property="og:description" content="Praćenje potrošnje peleta kroz grejne sezone">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="icons/icon-512x512.png">
+    <meta property="og:url" content="https://pelettracker.pro">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-fire-alt"></i> Pelet Tracker Pro</h1>
+            <p class="subtitle">Praćenje potrošnje peleta kroz grejne sezone</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar za upravljanje sezonama -->
+            <aside class="sidebar">
+                <section class="card">
+                    <h2><i class="fas fa-calendar-plus"></i> Nova sezona</h2>
+                    <div class="form-group">
+                        <label for="novaSezonaID">Naziv sezone:</label>
+                        <input type="text" id="novaSezonaID" placeholder="npr. Zima 2023/2024" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="pocetakGrejanja">Početak sezone:</label>
+                        <input type="date" id="pocetakGrejanja" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="krajGrejanja">Kraj sezone:</label>
+                        <input type="date" id="krajGrejanja" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="pocetnaKolicina">Početna zaliha (džakovi):</label>
+                        <input type="number" id="pocetnaKolicina" min="0" value="100" class="form-input">
+                        <small class="form-help">1 džak = 15kg</small>
+                    </div>
+                    <button id="dodajSezonuBtn" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> Kreiraj sezonu
+                    </button>
+                </section>
+
+                <section class="card">
+                    <h2><i class="fas fa-exchange-alt"></i> Upravljanje</h2>
+                    <div class="form-group">
+                        <label for="sezonaSelect">Aktivna sezona:</label>
+                        <select id="sezonaSelect" class="form-input"></select>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button id="izveziJSON" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Backup
+                        </button>
+                        <button id="obrisiSezonu" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Obriši sezonu
+                        </button>
+                    </div>
+
+                    <div class="divider"></div>
+                    
+                    <div class="form-group">
+                        <label for="jsonFile">Uvoz podataka:</label>
+                        <input type="file" id="jsonFile" accept=".json" class="form-input">
+                    </div>
+                    <div class="btn-group">
+                        <button id="uveziJSON" class="btn btn-secondary">
+                            <i class="fas fa-upload"></i> Uvezi JSON
+                        </button>
+                        <button id="resetSve" class="btn btn-danger">
+                            <i class="fas fa-redo"></i> Resetuj sve
+                        </button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2><i class="fas fa-history"></i> Istorija</h2>
+                    <div class="btn-group">
+                        <button id="undoDeleteBtn" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i> Vrati sezonu
+                        </button>
+                        <button id="showBackupsBtn" class="btn btn-secondary">
+                            <i class="fas fa-history"></i> Pregled backup-a
+                        </button>
+                    </div>
+                </section>
+
+                <!-- ========== SEKCIJA ZA TEMPERATURE ========== -->
+                <section class="card">
+                    <h2><i class="fas fa-thermometer-half"></i> Temperature</h2>
+                    <div class="form-group">
+                        <small class="form-help">
+                            <i class="fas fa-info-circle"></i> 
+                            Dodaj nove ili zameni postojeće temperature
+                        </small>
+                    </div>
+                    <div class="btn-group" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button id="dodajTemperatureBtn" class="btn btn-primary" style="padding: 0.75rem 0.5rem;">
+                            <i class="fas fa-cloud-download-alt"></i> Dodaj nove
+                        </button>
+                        <button id="updatePogresneTemperatureBtn" class="btn btn-warning" style="background: #f39c12; color: white; padding: 0.75rem 0.5rem;">
+                            <i class="fas fa-sync-alt"></i> Zameni sve
+                        </button>
+                    </div>
+                    <small class="form-help" style="display: block; margin-top: 10px; color: #e67e22; background: #fff3e0; padding: 5px 8px; border-radius: 4px;">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        <strong>Pažnja:</strong> "Zameni sve" prebrisaće postojeće temperature!
+                    </small>
+                </section>
+
+                <!-- ========== NOVA SEKCIJA ZA PRENOS ZALIHA ========== -->
+                <section class="card">
+                    <h2><i class="fas fa-exchange-alt"></i> Prenos zaliha</h2>
+                    <div class="form-group">
+                        <small class="form-help">
+                            <i class="fas fa-info-circle"></i>
+                            Prenesite nepotrošeni pelet iz jedne u drugu sezonu
+                        </small>
+                    </div>
+                    <button id="prenesiZaliheBtn" class="btn btn-primary" style="background: #27ae60;">
+                        <i class="fas fa-arrow-right"></i> Prenesi zalihe
+                    </button>
+                    <small class="form-help" style="display: block; margin-top: 10px;">
+                        <i class="fas fa-lightbulb"></i>
+                        Automatski ćete biti pitani prilikom kreiranja nove sezone
+                    </small>
+                </section>
+
+                <section class="card" id="rezimeSezoneCard">
+                    <h2><i class="fas fa-chart-line"></i> Rezime sezone</h2>
+                    <div id="rezimeSezone">
+                        <p class="info-text">Izaberite sezonu za pregled rezimea</p>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Glavni sadržaj -->
+            <main class="content">
+                <section class="card full-width">
+                    <div class="card-header">
+                        <h2><i class="fas fa-calendar-alt"></i> Kalendar i unos potrošnje</h2>
+                        <div class="controls">
+                            <button id="bulkEditBtn" class="btn btn-sm">
+                                <i class="fas fa-edit"></i> Grupni unos
+                            </button>
+                            <button id="autoFillBtn" class="btn btn-sm btn-secondary">
+                                <i class="fas fa-cloud-download-alt"></i> Dopuni temperature
+                            </button>
+                        </div>
+                    </div>
+                    <div id="kalendarContainer"></div>
+                </section>
+
+                <section class="card">
+                    <h2><i class="fas fa-chart-bar"></i> Mesečna statistika</h2>
+                    <div id="statistikaContainer">
+                        <p class="info-text">Podaci će se pojaviti kada unesete potrošnju</p>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2><i class="fas fa-chart-pie"></i> Grafik potrošnje</h2>
+                    <div id="grafContainer">
+                        <canvas id="potrosnjaChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="card full-width">
+                    <h2><i class="fas fa-balance-scale"></i> Poređenje sezona</h2>
+                    <div id="poredenjeContainer">
+                        <p class="info-text">Kreirajte više sezona za poređenje</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <p>Pelet Tracker Pro v3.0 &copy; 2024 | 1 džak = 15kg | 
+                <span id="storageUsage">0KB</span> used | 
+                <span id="cacheStatus">Cache: 0</span>
+                <span id="connectionStatus" style="margin-left: 10px;">
+                    <i class="fas fa-wifi"></i>
+                </span>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modal za grupni unos -->
+    <div id="bulkEditModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Grupni unos potrošnje</h3>
+                <button class="modal-close" aria-label="Zatvori">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Period:</label>
+                    <div class="date-range">
+                        <input type="date" id="bulkStartDate" class="form-input">
+                        <span>do</span>
+                        <input type="date" id="bulkEndDate" class="form-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dnevna potrošnja (džakovi):</label>
+                    <input type="number" id="bulkPotrosnja" min="0" step="0.1" value="0" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Temperatura (°C):</label>
+                    <input type="number" id="bulkTemperatura" step="0.1" value="5" class="form-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBulkBtn" class="btn btn-secondary">Otkaži</button>
+                <button id="applyBulkBtn" class="btn btn-primary">Primeni</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal za backup istoriju -->
+    <div id="backupsModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-history"></i> Backup istorija</h3>
+                <button class="modal-close" aria-label="Zatvori">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="backupsList">
+                    <p class="info-text">Učitavanje backup istorije...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeBackupsBtn" class="btn btn-secondary">Zatvori</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Učitavanje...</p>
+        </div>
+    </div>
+
+    <!-- Accessibility announcements for screen readers -->
+    <div class="sr-only" aria-live="polite" aria-atomic="true" id="screenReaderAnnouncements"></div>
+
+    <!-- Skriptovi -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="utils.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- PWA inicijalizacija -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                    console.log('Service Worker registrovan:', registration.scope);
+                    
+                    registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        console.log('Novi Service Worker se instalira');
+                    });
+                }).catch(function(error) {
+                    console.log('Service Worker registracija neuspešna:', error);
+                });
+            });
+        }
+
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            if (statusElement) {
+                if (navigator.onLine) {
+                    statusElement.innerHTML = '<i class="fas fa-wifi" style="color: #27ae60;"></i>';
+                    statusElement.title = 'Online';
+                } else {
+                    statusElement.innerHTML = '<i class="fas fa-wifi-slash" style="color: #e74c3c;"></i>';
+                    statusElement.title = 'Offline mod';
+                }
+            }
+        }
+
+        window.addEventListener('online', function() {
+            updateConnectionStatus();
+            if (window.UIHelpers) {
+                UIHelpers.showAlert('Povezan sa internetom', 'success', 3000);
+            }
+        });
+
+        window.addEventListener('offline', function() {
+            updateConnectionStatus();
+            if (window.UIHelpers) {
+                UIHelpers.showAlert('Offline mod - promene će biti sačuvane lokalno', 'warning', 5000);
+            }
+        });
+
+        setTimeout(updateConnectionStatus, 100);
+
+        function updateStorageUsage() {
+            try {
+                if (window.dataManager) {
+                    const usage = dataManager.getStorageUsage();
+                    const usageKB = Math.ceil(usage / 1024);
+                    const storageElement = document.getElementById('storageUsage');
+                    if (storageElement) {
+                        storageElement.textContent = `${usageKB}KB`;
+                    }
+                }
+                
+                if (window.temperatureService) {
+                    const cacheSize = temperatureService.getCacheSize();
+                    const cacheElement = document.getElementById('cacheStatus');
+                    if (cacheElement) {
+                        cacheElement.textContent = `Cache: ${cacheSize}`;
+                    }
+                }
+            } catch (error) {
+                console.log('Error updating storage usage:', error);
+            }
+        }
+
+        setInterval(updateStorageUsage, 30000);
+        setTimeout(updateStorageUsage, 1000);
+        
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('PWA može biti instaliran');
+        });
+    </script>
+</body>
+</html>
